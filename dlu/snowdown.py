@@ -1,4 +1,4 @@
-from shaper import *
+from dlu.shaper import *
 import math
 
 ROWS = 6

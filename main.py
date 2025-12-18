@@ -1,4 +1,4 @@
-from uiux import *
+from dlu.uiux import *
 
 # Shapes:
 #   CANE, CANDLE, COOKIE, GIFT4, GIFT6,

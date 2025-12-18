@@ -1,4 +1,4 @@
-from snowdown import *
+from dlu.snowdown import *
 import time
 
 def next_move(state):
