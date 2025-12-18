@@ -1,0 +1,5 @@
+Best first guess | Possible arrangements (forms only)
+========
+
+CANDLE, GIFT6, TREE, WREATH
+    (2, 4) | 3,809,612
