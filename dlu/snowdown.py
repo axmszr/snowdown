@@ -51,7 +51,7 @@ class Board:
 
     def match_misses(self, misses):
         for miss in misses:
-            if self.at(miss[0], miss[1])::
+            if self.at(miss[0], miss[1]):
                 return False
         return True
     
