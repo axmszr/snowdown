@@ -1,6 +1,14 @@
 from dlu.snowdown import *
 import time
 
+def print_board(board):
+    print(BORDER)
+    for row in board:
+        row_str = ['X' if b == '1' else '.' for b in bin(row)[-1:1:-1]]
+        print("  " + ' '.join(row_str))
+    print(BORDER)
+    print()
+
 def next_move(state):
     print("Getting counts...")
     start = time.time()
@@ -15,7 +23,7 @@ def next_move(state):
         return False
     if move == ONE_BOARD:
         print("Only one possible board:")
-        state.boards[0].print_board()
+        print_board(state.boards[0])
         return False
     
     best_count = counts[move[0]][move[1]]
@@ -114,7 +122,7 @@ def do_move(state):
 ########
 
 def run(shapes, hits, misses):
-    print(f"{sum(len(shape.forms) for shape in shapes)} forms" +\
+    print(f"{sum(len(shape[0]) for shape in shapes)} forms" +\
           f" over {len(shapes)} shapes. Generating boards...")
     start = time.time()
     state = Boards(shapes, hits, misses)
@@ -131,7 +139,7 @@ def run(shapes, hits, misses):
         print("\nUser requested to end session.")
 
     # Just to print tuples without spaces
-    hits_str = ", ".join(f"({hit[0]},{hit[1]})" for hit in state.hits)
-    misses_str = ", ".join(f"({miss[0]},{miss[1]})" for miss in state.misses)
-    print(f"To save for future use:\n  Hits:   [{hits_str}]\n" +\
-          f"  Misses: [{misses_str}]\nIt's over! Hooray!")
+    hit_str = ", ".join(f"({hit[0]},{hit[1]})" for hit in state.hits)
+    miss_str = ", ".join(f"({miss[0]},{miss[1]})" for miss in state.misses)
+    print(f"To save for future use:\n  Hits:   [{hit_str}]\n" +\
+          f"  Misses: [{miss_str}]\nIt's over! Hooray!")

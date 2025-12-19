@@ -14,72 +14,68 @@
 # Case 1: MH reflects asymmetrical shapes - 8/4 forms per shape
 # Case 2: MH reflects all shapes - 8 forms per shape
 
-class Shape:
-    def __init__(self, refl, rot, *tiles):
-        rots = [tiles]
-        for i in range(1, rot):
-            tiles = tuple((-tile[1], tile[0]) for tile in tiles)
-            rots.append(tiles)
+def make_shape(refl, rot, *tiles):
+    rots = [tiles]
+    for i in range(1, rot):
+        tiles = tuple((-tile[1], tile[0]) for tile in tiles)
+        rots.append(tiles)
 
-        refls = []
-        if refl:
-            for shape in rots:
-                refls.append(tuple((-tile[0], tile[1]) for tile in shape))
+    refls = []
+    if refl:
+        for shape in rots:
+            refls.append(tuple((-tile[0], tile[1]) for tile in shape))
 
-        self.forms = tuple(rots + refls)
-        self.skins = 4 // rot
+    return (tuple(rots + refls), 4 // rot)
 
-    def print_shape(self):
-        form_0 = self.forms[0][0]
-        pass
-        #TODO
+def print_form(form):
+    pass
+    #TODO
 
 ########
-#NAME   = Shape(will be refl?, num of rotations,
-#               *extremes,
-#               *rest)                              #sketch from (0,0)
+#NAME   = make_shape(chirality, num of rotations,
+#                    *extremes,
+#                    *rest)                             #sketch from (0,0)
 
+CANE    = make_shape(True, 4,
+                     (0,1), (3,0),                      ####
+                     (1,1), (2,1), (3,1), (2,0))          ##
 
-CANE    = Shape(True, 4,
-                (0,1), (3,0),                       ####
-                (1,1), (2,1), (3,1), (2,0))           ##
+CANDLE  = make_shape(False, 4,                           #
+                     (0,0), (1,2), (2,0),                #
+                     (1,0), (1,1))                      ###
 
-CANDLE  = Shape(False, 4,                            #
-                (0,0), (1,2), (2,0),                 #
-                (1,0), (1,1))                       ###
+COOKIE  = make_shape(False, 4,                          ##
+                     (0,0), (1,2),                      #
+                     (1,0), (0,1), (0,2))               ##
 
-COOKIE  = Shape(False, 4,                           ##
-                (0,0), (1,2),                       #
-                (1,0), (0,1), (0,2))                ##
+GIFT4   = make_shape(False, 1,
+                     (0,0), (1,1),                      ##
+                     (0,1), (1,0))                      ##
 
-GIFT4   = Shape(False, 1,
-                (0,0), (1,1),                       ##
-                (0,1), (1,0))                       ##
+GIFT6   = make_shape(False, 2,                          ##
+                     (0,0), (1,2),                      ##
+                     (0,2), (1,0), (0,1), (1,1))        ##
 
-GIFT6   = Shape(False, 2,                           ##
-                (0,0), (1,2),                       ##
-                (0,2), (1,0), (0,1), (1,1))         ##
+HAT     = make_shape(False, 4,                           ##
+                     (0,0), (2,2), (3,0),                ##
+                     (1,2), (2,0), (1,0), (1,1), (2,1)) ####
 
-HAT     = Shape(False, 4,                            ##
-                (0,0), (2,2), (3,0),                 ##
-                (1,2), (2,0), (1,0), (1,1), (2,1))  ####
+LOG     = make_shape(False, 2,
+                     (0,0), (4,0),
+                     (1,0), (2,0), (3,0))               #####
 
-LOG     = Shape(False, 2,
-                (0,0), (4,0),
-                (1,0), (2,0), (3,0))                #####
+SCARF   = make_shape(True, 2,
+                     (0,0), (2,1),                       ##
+                     (1,0), (1,1))                      ##
 
-SCARF   = Shape(True, 2,
-                (0,0), (2,1),                        ##
-                (1,0), (1,1))                       ##
+STAR    = make_shape(False, 1,                           #
+                     (0,1), (2,1),                      ###
+                     (1,2), (1,0), (1,1))                #
 
-STAR    = Shape(False, 1,                            #
-                (0,1), (2,1),                       ###
-                (1,2), (1,0), (1,1))                 #
+TREE    = make_shape(False, 4,                           #
+                     (0,0), (1,2), (2,0),               ###
+                     (0,1), (2,1), (1,0), (1,1))        ###
 
-TREE    = Shape(False, 4,                            #
-                (0,0), (1,2), (2,0),                ###
-                (0,1), (2,1), (1,0), (1,1))         ###
-
-WREATH  = Shape(False, 1,                           ###
-                (0,0), (2,2), (0,2), (2,0),         # #
-                (0,1), (1,2), (2,1), (1,0))         ###
+WREATH  = make_shape(False, 1,                          ###
+                     (0,0), (2,2), (0,2), (2,0),        # #
+                     (0,1), (1,2), (2,1), (1,0))        ###
