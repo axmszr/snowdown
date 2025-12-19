@@ -3,50 +3,69 @@ import math
 
 ROWS = 6
 COLS = 11
-BORDER = "  " + '=' * COLS
+BORDER = "  " + '=' * (COLS * 2 - 1)
 ONE_BOARD = (-1, -1)
 NO_BOARDS = (-1, -2)
 
+
+class Row:
+    def __init__(self, x):
+        self.x = x
+
+    def val(self):
+        return self.x
+
+    def at(self, i):
+        return bool(self.x & (2 ** i))
+
+    def set(self, i):
+        self.x = self.x | (2 ** i)
+
+    def print_row(self):
+        return bin(self.x)[-1:1:-1]
+
+########
+
 class Board:
     def __init__(self):
-        self.grid = tuple(tuple(False for col in range(COLS))
-                          for row in range(ROWS))
+        self.grid = tuple(Row(0) for row in range(ROWS))
+
+    def at(self, row, col):
+        return self.grid[row].at(col)
 
     def can_insert(self, row, col):
         if (row < 0 or row >= ROWS) \
            or (col < 0 or col >= COLS):
             return False
-        return not self.grid[row][col]
+        return not self.at(row, col)
 
     def insert(self, form, row, col):
-        new_grid = [[self.grid[row][col] for col in range(COLS)]
-                    for row in range(ROWS)]
+        new_grid = tuple(Row(self.grid[row].val()) for row in range(ROWS))
         for tile in form:
             if not self.can_insert(row + tile[0], col + tile[1]):
                 return False
-            new_grid[row + tile[0]][col + tile[1]] = True
+            new_grid[row + tile[0]].set(col + tile[1])
         new_board = Board()
-        new_board.grid = tuple(tuple(new_grid[row][col] for col in range(COLS))
-                               for row in range(ROWS))
+        new_board.grid = new_grid
         return new_board
 
     def match_misses(self, misses):
         for miss in misses:
-            if self.grid[miss[0]][miss[1]]:
+            if self.at(miss[0], miss[1])::
                 return False
         return True
     
     def match_hits(self, hits):
         for hit in hits:
-            if not self.grid[hit[0]][hit[1]]:
+            if not self.at(hit[0], hit[1]):
                 return False
         return True
 
     def print_board(self):
         print(BORDER)
-        for row in range(ROWS):
-            row_str = ['X' if self.grid[row][col] else '.' for col in range(COLS)]
-            print("  " + ''.join(row_str))
+        for row in self.grid:
+            row_str = ['X' if x == '1' else '.' for col in row.print_row()]
+            print("  " + ' '.join(row_str))
         print(BORDER)
         print()
 
@@ -59,10 +78,10 @@ class Boards:
     @classmethod
     def generate(cls, board, shapes, hits, misses):
         if not shapes:
-            #Boards.COUNTER += 1
-            #if Boards.COUNTER in Boards.CHECKPOINTS:
-            #    print(f"  Currently at {Boards.COUNTER} boards.")
             if board.match_hits(hits):
+                #Boards.COUNTER += 1
+                #if Boards.COUNTER in Boards.CHECKPOINTS:
+                #    print(f"  Currently at {Boards.COUNTER} boards.")
                 return [board]
             return []
 
@@ -90,7 +109,7 @@ class Boards:
         for board in self.boards:
             for row in range(ROWS):
                 for col in range(COLS):
-                    if board.grid[row][col]:
+                    if not board.at(row, col):
                         counts[row][col] += 1
         return counts
 
@@ -124,7 +143,7 @@ class Boards:
             
         print(BORDER)
         for state in states:
-            print("  " + ''.join(state))
+            print("  " + ' '.join(state))
         print(BORDER)
         print(f"Possible boards: {len(self.boards)}" +\
               f" [{len(self.boards) * self.copies}]")
@@ -138,14 +157,12 @@ class Boards:
         if self.already_hitmiss(tile):
             return False
         self.hits.append(tile)
-        self.boards = [board for board in self.boards
-                       if board.match_hits([tile])]
+        self.boards = list(filter(lambda b: b.match_hits([tile]), self.boards))
         return True
 
     def add_miss(self, tile):
         if self.already_hitmiss(tile):
             return False
         self.misses.append(tile)
-        self.boards = [board for board in self.boards
-                       if board.match_misses([tile])]
+        self.boards = list(filter(lambda b: b.match_misses([tile]), self.boards))
         return True
