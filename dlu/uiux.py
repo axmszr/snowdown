@@ -9,16 +9,21 @@ def next_move(state):
     print("Finding best move...")
     move = state.best_move(counts)
     dur = round(time.time() - start, 3)
-    if move:
-        best_count = counts[move[0]][move[1]]
-        p = round(best_count/len(state.boards), 5)
-        delta = abs(best_count - len(state.boards) / 2)
-        print(f"The best move is {move} with p = {p} / d  = {delta}" +\
-              f" [{int(delta * state.copies)}]). Found in {dur}s.\n")
-        return True
+
+    if move == NO_BOARDS:
+        print("You (not I) dun goofed somewhere. There are 0 possible boards.")
+        return False
+    if move == ONE_BOARD:
+        print("Only one possible board:")
+        state.boards[0].print_board()
+        return False
     
-    print("Only one possible board:")
-    state.boards[0].print_board()
+    best_count = counts[move[0]][move[1]]
+    p = round(best_count/len(state.boards), 5)
+    delta = abs(best_count - len(state.boards) / 2)
+    print(f"The best move is {move} with p = {p} / d  = {delta}" +\
+          f" [{int(delta * state.copies)}]). Found in {dur}s.\n")
+    return True
 
 
 def check_move(abc):
@@ -119,7 +124,10 @@ def run(shapes, hits, misses):
         while next_move(state):
             do_move(state)
     except KeyboardInterrupt:
-        print("\nSession ended. To save for future use:")
-        print(f"  Hits:   {state.hits}\n  Misses: {state.misses}")
-        return
-    print("\nIt's over! Hooray!")
+        print("\nUser requested to end session.")
+
+    # Just to print tuples without spaces
+    hits_str = ", ".join(f"({hit[0]},{hit[1]})" for hit in state.hits)
+    misses_str = ", ".join(f"({miss[0]},{miss[1]})" for miss in state.misses)
+    print(f"To save for future use:\n  Hits:   [{hits_str}]\n" +\
+          f"  Misses: [{misses_str}]\nIt's over! Hooray!")

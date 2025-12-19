@@ -4,6 +4,8 @@ import math
 ROWS = 6
 COLS = 11
 BORDER = "  " + '=' * COLS
+ONE_BOARD = (-1, -1)
+NO_BOARDS = (-1, -2)
 
 class Board:
     def __init__(self):
@@ -94,8 +96,10 @@ class Boards:
 
     def best_move(self, counts):
         total = len(self.boards)
+        if total == 0:
+            return NO_BOARDS
         if total == 1:
-            return False
+            return ONE_BOARD
         
         # for a binary outcome, entropy is maxed at p = 1/2
         best = abs(counts[0][0] * 2 - total)

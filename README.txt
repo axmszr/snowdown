@@ -10,4 +10,6 @@
 
 - If you have a shape combination not in 'combos.txt' and are starting from scratch, please do drop a PR to update the list.
 
+- If you ever notice a symmetrical shape (i.e. not SCARF or CANE) with a mirrored texture, that means that shape has twice as many skins. It will not affect the probability distribution, but yikes.
+
 - I have not done nearly enough stress testing, particularly with user input error handling. Please let me know if anything goes wrong.
