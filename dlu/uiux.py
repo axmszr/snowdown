@@ -100,11 +100,15 @@ def do_move(state):
               " from the buffoon you are), you may try again. Otherwise," +\
               " you may have to restart lol l00ser.\n\n")
         return do_move(state)
-    
+
+    print("\nUpdating possible boards...")
+    start = time.time()
     if hit:
         state.add_hit(tile)
     else:
         state.add_miss(tile)
+    dur = round(time.time() - start, 3)
+    print(f"Updated in {dur}s:")
     state.print_state()
     
 ########
