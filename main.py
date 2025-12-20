@@ -8,6 +8,27 @@ from dlu.uiux import *
 # Second coordinate is column, from left to right
 # Start from (0,0) in the top-left, then trace an 'L' shape
 
+# e.g.
+# Solved:
+#  =====================
+#  X . . . . X X X . . .
+#  X X X . . X . X . . .
+#  X . X X . X X X . . .
+#  . . X X X . X X . . .
+#  . . X X . . X X . . .
+#  . . . . . . X X . . .
+#  =====================
+#
+# Current info:
+#  =====================
+#  . . . . . . 1 1 . . .
+#  . 1 1 0 . 1 0 . 0 . .
+#  . 0 . . 0 . . . . . .
+#  . . . . . . 1 . 0 . .
+#  . . . . . 0 . 1 . . .
+#  . . . . . . . 1 . . .
+#  =====================
+
 ########
 
 shapes  = [CANDLE, GIFT6, TREE, WREATH]
