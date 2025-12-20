@@ -10,11 +10,12 @@ def print_board(board):
     print(BORDER)
     print()
 
+
 def next_move(state):
     print("Getting counts...")
     start = time.time()
     counts = state.get_counts()
-    
+
     print("Finding best move...")
     move = state.best_move(counts)
     dur = round(time.time() - start, 3)
@@ -26,7 +27,7 @@ def next_move(state):
         print("Only one possible board:")
         print_board(state.boards[0])
         return False
-    
+
     best_count = counts[move[0]][move[1]]
     p = round(best_count/len(state.boards), 5)
     delta = abs(best_count - len(state.boards) / 2)
@@ -65,17 +66,34 @@ def check_check(a):
     try:
         x = int(a)
     except ValueError:
-        print("That's literally not a number wth")
+        print("That's literally not a number wth.")
         return False
 
     if x not in (0, 1):
-        print("Follow instructions can or not")
+        print("Follow instructions can or not.")
         return False
 
     return True
 
 
-def ask_move():
+def print_hitmiss(hits, misses, *highlight):
+    states = [["." for col in range(COLS)]
+             for row in range(ROWS)]
+    for hit in hits:
+        states[hit[0]][hit[1]] = '1'
+    for miss in misses:
+        states[miss[0]][miss[1]] = '0'
+    if highlight:
+        x, y, z = highlight
+        states[x][y] = ('o', 'i')[z]
+
+    print(BORDER)
+    for state in states:
+        print("  " + ' '.join(state))
+    print(BORDER)
+
+
+def ask_move(state):
     print("Please input your new move in the form:\n    'X Y Z'")
     print("where\n  X is the row from the top (0-indexing)")
     print("  Y is the column from the left (0-indexing)")
@@ -85,13 +103,10 @@ def ask_move():
         abc = input("New move:\n")
         while not check_move(abc):
             abc = input("\nTry again bodoh:\n")
-        
+
         x, y, z = [int(a) for a in abc.split(' ')]
         print(f"\n--> {'HIT' if z else 'MISS'} at ({x},{y})")
-        if z:
-            print_hitmiss([(x, y)], [])
-        else:
-            print_hitmiss([], [(x, y)])
+        print_hitmiss(state.hits, state.misses, x, y, z)
         correct = input("Is this correct? 1 for YES, 0 for NO.\n")
         while not check_check(correct):
             correct = input("Come, practice your literacy again:\n")
@@ -99,34 +114,23 @@ def ask_move():
         if int(correct):
             break
         else:
-            print("Stupiak lah you\n")
+            print("\nStupiak lah you.")
 
     return (x, y, z)
 
 
-def print_hitmiss(hits, misses):
-    states = [["." for col in range(COLS)]
-             for row in range(ROWS)]
-    for hit in hits:
-        states[hit[0]][hit[1]] = "1"
-    for miss in misses:
-        states[miss[0]][miss[1]] = "0"
-        
-    print(BORDER)
-    for state in states:
-        print("  " + ' '.join(state))
-    print(BORDER)
-
-
-def print_state(state):
+def print_state(state, with_board):
     num_boards = len(state.boards)
-    print_hitmiss(state.hits, state.misses)
-    print(f"Possible boards: {num_boards} [{num_boards * state.copies}]")
-    print(f"Roughly {round(math.log(num_boards, 2))} more steps for full info.\n")
-    
+    if with_board:
+        print_hitmiss(state.hits, state.misses)
+    print(f"{'' if  with_board else '  '}Possible boards: {num_boards}" +\
+          f" [{num_boards * state.copies}]")
+    print(f"{'' if  with_board else '  '}Roughly" +\
+          f" {round(math.log(num_boards, 2))} more steps for full info.\n")
+
 
 def do_move(state):
-    *tile, hit = ask_move()
+    *tile, hit = ask_move(state)
     if state.already_hitmiss(tile):
         print(f"{tile} has already been checked:")
         print_hitmiss(state.hits, state.misses)
@@ -143,8 +147,8 @@ def do_move(state):
         state.add_miss(tile)
     dur = round(time.time() - start, 3)
     print(f"Updated in {dur}s:")
-    print_state(state)
-    
+    print_state(state, False)
+
 ########
 
 def run(shapes, hits, misses):
@@ -154,7 +158,7 @@ def run(shapes, hits, misses):
     state = Boards(shapes, hits, misses)
     dur = round(time.time() - start, 3)
     print(f"Took {dur}s.")
-    print_state(state)
+    print_state(state, True)
 
     try:
         print("Press CTRL+C anytime to end the session" +\
