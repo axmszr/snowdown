@@ -4,7 +4,8 @@ import time
 def print_board(board):
     print(BORDER)
     for row in board:
-        row_str = ['X' if b == '1' else '.' for b in bin(row)[-1:1:-1]]
+        row_str = ['X' if b == '1' else '.' for b in \
+                   bin(row)[-1:1:-1].ljust(COLS, '0')]
         print("  " + ' '.join(row_str))
     print(BORDER)
     print()
