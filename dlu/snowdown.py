@@ -38,7 +38,7 @@ def generate_boards(shapes, hits, misses):
     def generate(board, shapes):
         if not shapes:
             for hit_row in hit_rows:
-                if ~(board[hit_row[0]] - 1) & hit_row[1]:
+                if ~board[hit_row[0]] & hit_row[1]:
                     return []
             #Boards.COUNTER += 1
             #if Boards.COUNTER in Boards.CHECKPOINTS:
@@ -91,14 +91,15 @@ class Boards:
             return ONE_BOARD
         
         # for a binary outcome, entropy is maxed at p = 1/2
-        best = abs(counts[0][0] * 2 - total)
-        move = (0, 0)
+        best = total + 1
+        move = NO_BOARDS
         for row in range(ROWS):
             for col in range(COLS):
-                delta = abs(counts[row][col] * 2 - total)
-                if delta == 0:
+                d = counts[row][col] * 2 - total
+                if d == 0:
                     return (row, col)
-                elif delta < best:
+                delta = abs(d)
+                if delta < best or d == best:
                     best = delta
                     move = (row, col)
         return move
