@@ -15,8 +15,6 @@ def next_move(state):
     print("Getting counts...")
     start = time.time()
     counts = state.get_counts()
-
-    print("Finding best move...")
     move = state.best_move(counts)
     dur = round(time.time() - start, 3)
 
@@ -31,8 +29,8 @@ def next_move(state):
     best_count = counts[move[0]][move[1]]
     p = round(best_count/len(state.boards), 5)
     delta = abs(best_count - len(state.boards) / 2)
-    print(f"The best move is {move} with p = {p} / d  = {delta}" +\
-          f" [{int(delta * state.copies)}]). Found in {dur}s.\n")
+    print(f"Best move: {move}\n  p = {p}\n  d  = {delta}" +\
+          f" [{int(delta * state.copies)}]\n  Found in {dur}s\n")
     return True
 
 
@@ -123,10 +121,8 @@ def print_state(state, with_board):
     num_boards = len(state.boards)
     if with_board:
         print_hitmiss(state.hits, state.misses)
-    print(f"{'' if  with_board else '  '}Possible boards: {num_boards}" +\
-          f" [{num_boards * state.copies}]")
-    print(f"{'' if  with_board else '  '}Roughly" +\
-          f" {round(math.log(num_boards, 2))} more steps for full info.\n")
+    print(f"Possible boards: {num_boards} [{num_boards * state.copies}]")
+    print(f"~{round(math.log(num_boards, 2))} more steps for full info.\n")
 
 
 def do_move(state):
@@ -140,13 +136,10 @@ def do_move(state):
         return do_move(state)
 
     print("\nUpdating possible boards...")
-    start = time.time()
     if hit:
         state.add_hit(tile)
     else:
         state.add_miss(tile)
-    dur = round(time.time() - start, 3)
-    print(f"Updated in {dur}s:")
     print_state(state, False)
 
 ########
