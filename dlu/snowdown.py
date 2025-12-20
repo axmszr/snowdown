@@ -89,7 +89,7 @@ class Boards:
             return NO_BOARDS
         if total == 1:
             return ONE_BOARD
-        
+
         # for a binary outcome, entropy is maxed at p = 1/2
         best = total + 1
         move = NO_BOARDS
