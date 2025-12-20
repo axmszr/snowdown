@@ -104,23 +104,6 @@ class Boards:
                     move = (row, col)
         return move
 
-    def print_state(self):
-        states = [["." for col in range(COLS)]
-                 for row in range(ROWS)]
-        for hit in self.hits:
-            states[hit[0]][hit[1]] = "1"
-        for miss in self.misses:
-            states[miss[0]][miss[1]] = "0"
-            
-        print(BORDER)
-        for state in states:
-            print("  " + ' '.join(state))
-        print(BORDER)
-        print(f"Possible boards: {len(self.boards)}" +\
-              f" [{len(self.boards) * self.copies}]")
-        print(f"Roughly {round(math.log(len(self.boards), 2))} more steps" +\
-              " for full information.\n")
-
     def already_hitmiss(self, tile):
         return tile in self.hits or tile in self.misses
 

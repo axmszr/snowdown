@@ -88,6 +88,10 @@ def ask_move():
         
         x, y, z = [int(a) for a in abc.split(' ')]
         print(f"\n--> {'HIT' if z else 'MISS'} at ({x},{y})")
+        if z:
+            print_hitmiss([(x, y)], [])
+        else:
+            print_hitmiss([], [(x, y)])
         correct = input("Is this correct? 1 for YES, 0 for NO.\n")
         while not check_check(correct):
             correct = input("Come, practice your literacy again:\n")
@@ -100,11 +104,32 @@ def ask_move():
     return (x, y, z)
 
 
+def print_hitmiss(hits, misses):
+    states = [["." for col in range(COLS)]
+             for row in range(ROWS)]
+    for hit in hits:
+        states[hit[0]][hit[1]] = "1"
+    for miss in misses:
+        states[miss[0]][miss[1]] = "0"
+        
+    print(BORDER)
+    for state in states:
+        print("  " + ' '.join(state))
+    print(BORDER)
+
+
+def print_state(state):
+    num_boards = len(state.boards)
+    print_hitmiss(state.hits, state.misses)
+    print(f"Possible boards: {num_boards} [{num_boards * state.copies}]")
+    print(f"Roughly {round(math.log(num_boards, 2))} more steps for full info.\n")
+    
+
 def do_move(state):
     *tile, hit = ask_move()
     if state.already_hitmiss(tile):
         print(f"{tile} has already been checked:")
-        state.print_state()
+        print_hitmiss(state.hits, state.misses)
         print("If this was a mistake with the latest input (as expected" +\
               " from the buffoon you are), you may try again. Otherwise," +\
               " you may have to restart lol l00ser.\n\n")
@@ -118,7 +143,7 @@ def do_move(state):
         state.add_miss(tile)
     dur = round(time.time() - start, 3)
     print(f"Updated in {dur}s:")
-    state.print_state()
+    print_state(state)
     
 ########
 
@@ -129,11 +154,11 @@ def run(shapes, hits, misses):
     state = Boards(shapes, hits, misses)
     dur = round(time.time() - start, 3)
     print(f"Took {dur}s.")
-    state.print_state()
+    print_state(state)
 
     try:
         print("Press CTRL+C anytime to end the session" +\
-              " and print the updated hits & misses.\n")
+              " and print the latest hits & misses.\n")
         while next_move(state):
             do_move(state)
     except KeyboardInterrupt:
