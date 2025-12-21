@@ -67,7 +67,9 @@ def generate_boards(shapes, hits, misses):
 class Boards:
     def __init__(self, shapes, hits, misses):
         self.boards = generate_boards(shapes, hits, misses)
-        self.copies = sum(shape[1] for shape in shapes)
+        self.copies = 1
+        for shape in shapes:
+            self.copies *= shape[1]
         self.hits = hits
         self.misses = misses
 
