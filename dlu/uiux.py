@@ -29,8 +29,8 @@ def next_move(state):
     best_count = counts[move[0]][move[1]]
     p = round(best_count/len(state.boards), 5)
     delta = abs(best_count - len(state.boards) / 2)
-    print(f"Best move: {move}\n  p = {p}\n  d  = {delta}" +\
-          f" [{int(delta * state.copies)}]\n  Found in {dur}s\n")
+    print(f"Found in {dur}s, with\n  p = {p}\n  d = {delta}" +\
+          f" [{int(delta * state.copies)}]\nBest move: {move}\n")
     return True
 
 
