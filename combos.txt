@@ -4,7 +4,10 @@ Best first guess | Possible arrangements (forms only)
 CANDLE, GIFT6, TREE, WREATH
     (2, 4) |  3,809,612
 
-CANDLE, COOKIE, GIFT4, WREATH
+CANE, COOKIE, GIFT4, GIFT6
+    (3, 9) | 33,965,656
+
+CANE, COOKIE, GIFT4, WREATH
     (3, 8) |  9,716,004
 
 COOKIE, HAT, LOG, TREE
