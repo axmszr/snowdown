@@ -1,20 +1,23 @@
-Best first guess | Possible arrangements (forms only)
+Possible arrangements (forms only) | Best first guess
 ========
 
+CANDLE, GIFT6, LOG, STAR
+     3,398,700 | (3, 8)
+
 CANDLE, GIFT6, TREE, WREATH
-    (2, 4) |  3,809,612
+     3,809,612 | (2, 4)
 
 CANE, COOKIE, GIFT4, GIFT6
-    (3, 9) | 33,965,656
+    33,965,656 | (3, 9)
 
 CANE, COOKIE, GIFT4, WREATH
-    (3, 8) |  9,716,004
+     9,716,004 | (3, 8)
 
 CANE, GIFT4, LOG, STAR
-    (3, 7) |  5,039,692
+     5,039,692 | (3, 7)
 
 CANE, GIFT6, LOG, TREE
-    (3, 8) | 22,261,244
+    22,261,244 | (3, 8)
 
 COOKIE, HAT, LOG, TREE
-    (2, 5) | 12,950,744
+    12,950,744 | (2, 5)
