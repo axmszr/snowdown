@@ -9,8 +9,8 @@
 # 2 - 2 refl & 2/4 rot (e.g. GIFT)
 # 1 - 2 refl & 1/4 rot (e.g. STAR)
 
-# MH definitely rotates all shapes
-# MH definitely reflects the non-reflexive shapes
+# MH does not seem to rotate GIFT4
+# MH reflects the non-reflexive shapes
 # Case 1: MH reflects asymmetrical shapes - 8/4 forms per shape
 # Case 2: MH reflects all shapes - 8 forms per shape
 
