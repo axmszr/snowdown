@@ -4,6 +4,9 @@ Possible arrangements (forms only) | Best first guess
 CANDLE, CANE, COOKIE, GIFT4
     54,326,872 | (3, 8)
 
+CANDLE, COOKIE, GIFT6, TREE
+    30,291,276 | (3, 8)
+
 CANDLE, GIFT6, LOG, STAR
      3,398,700 | (3, 8)
 
