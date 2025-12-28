@@ -37,4 +37,4 @@ misses  = [(1,3), (2,1), (1,8), (4,5), (2,4), (1,6), (3,8)]
 
 ########
 
-run(shapes, hits, misses)
+state   = run(shapes, hits, misses)

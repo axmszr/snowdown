@@ -166,3 +166,4 @@ def run(shapes, hits, misses):
     miss_str = ", ".join(f"({miss[0]},{miss[1]})" for miss in state.misses)
     print(f"To save for future use:\n  Hits:   [{hit_str}]\n" +\
           f"  Misses: [{miss_str}]\nIt's over! Hooray!")
+    return state
