@@ -9,10 +9,9 @@
 # 2 - 2 refl & 2/4 rot (e.g. GIFT)
 # 1 - 2 refl & 1/4 rot (e.g. STAR)
 
-# MH does not seem to rotate GIFT4
+# MH does not seem to do rotations/reflections that do not change shape
+# --> no skins
 # MH reflects the non-reflexive shapes
-# Case 1: MH reflects asymmetrical shapes - 8/4 forms per shape
-# Case 2: MH reflects all shapes - 8 forms per shape
 
 def make_shape(refl, rot, *tiles):
     rots = [tiles]
@@ -25,14 +24,15 @@ def make_shape(refl, rot, *tiles):
         for shape in rots:
             refls.append(tuple((-tile[0], tile[1]) for tile in shape))
 
-    return (tuple(rots + refls), 4 // rot)
+    #return (tuple(rots + refls), 4 // rot)
+    return tuple(rots + refls)
 
 def print_form(form):
     pass
     #TODO
 
 ########
-#NAME   = make_shape(chirality, num of rotations,
+#NAME   = make_shape(chirality, num of rotated forms,
 #                    *extremes,
 #                    *rest)                             #sketch from (0,0)
 

@@ -29,8 +29,8 @@ def next_move(state):
     best_count = counts[move[0]][move[1]]
     p = round(best_count/len(state.boards), 5)
     delta = abs(best_count - len(state.boards) / 2)
-    print(f"Found in {dur}s, with\n  p = {p}\n  d = {delta}" +\
-          f" [{int(delta * state.copies)}]\nBest move: {move}\n")
+    print(f"Found in {dur}s, with\n  p = {p}\n  d = {delta}\n" +\
+          f"Best move: {move}\n")
     return True
 
 
@@ -121,8 +121,8 @@ def print_state(state, with_board):
     num_boards = len(state.boards)
     if with_board:
         print_hitmiss(state.hits, state.misses)
-    print(f"Possible boards: {num_boards} [{num_boards * state.copies}]")
-    print(f"~{round(math.log(num_boards, 2))} more steps for full info.\n")
+    print(f"  Possible boards: {num_boards}")
+    print(f"  ~{round(math.log(num_boards, 2))} more steps for full info.\n")
 
 
 def do_move(state):
@@ -145,7 +145,7 @@ def do_move(state):
 ########
 
 def run(shapes, hits, misses):
-    print(f"{sum(len(shape[0]) for shape in shapes)} forms" +\
+    print(f"{sum(len(shape) for shape in shapes)} forms" +\
           f" over {len(shapes)} shapes. Generating boards...")
     start = time.time()
     state = Boards(shapes, hits, misses)

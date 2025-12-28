@@ -46,7 +46,7 @@ def generate_boards(shapes, hits, misses):
             return [board]
 
         boards = []
-        forms = shapes[0][0]
+        forms = shapes[0]
         remain = shapes[1:]
         for form in forms:
             for row in range(ROWS):
@@ -67,9 +67,6 @@ def generate_boards(shapes, hits, misses):
 class Boards:
     def __init__(self, shapes, hits, misses):
         self.boards = generate_boards(shapes, hits, misses)
-        self.copies = 1
-        for shape in shapes:
-            self.copies *= shape[1]
         self.hits = hits
         self.misses = misses
 
