@@ -44,7 +44,7 @@ def check_move(abc):
     try:
         x, y, z = xyz
     except ValueError:
-        print(f"len(xyz) arguments found instead of three >:(")
+        print(f"{len(xyz)} arguments found instead of three >:(")
         return False
 
     if x < 0 or x >= ROWS:
