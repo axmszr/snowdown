@@ -11,11 +11,14 @@ def print_board(board):
     print()
 
 
-def next_move(state):
+def next_move(state, fast):
     print("Getting counts...")
     start = time.time()
     counts = state.get_counts()
-    move = state.best_move(counts)
+    if fast:
+        move = state.best_move(counts)
+    else:
+        move = state.most_move(counts)
     dur = round(time.time() - start, 3)
 
     if move == NO_BOARDS:
@@ -28,9 +31,13 @@ def next_move(state):
 
     best_count = counts[move[0]][move[1]]
     p = round(best_count/len(state.boards), 5)
-    delta = abs(best_count - len(state.boards) / 2)
-    print(f"Found in {dur}s, with\n  p = {p}\n  d = {delta}\n" +\
-          f"Best move: {move}\n")
+    print(f"Found in {dur}s, with\n  p = {p}")
+    if fast:
+        delta = abs(best_count - len(state.boards) / 2)
+        print(f"  delta = {delta}")
+    else:
+        print(f"  count = {best_count}")
+    print(f"Best move: {move}\n")
     return True
 
 
@@ -127,8 +134,9 @@ def print_state(state, with_board):
 
 def do_move(state):
     *tile, hit = ask_move(state)
+    tile = tuple(tile)
     if state.already_hitmiss(tile):
-        print(f"{tile} has already been checked:")
+        print(f"\n{tile} has already been checked:")
         print_hitmiss(state.hits, state.misses)
         print("If this was a mistake with the latest input (as expected" +\
               " from the buffoon you are), you may try again. Otherwise," +\
@@ -144,7 +152,11 @@ def do_move(state):
 
 ########
 
-def run(shapes, hits, misses):
+def play(shapes, hits, misses, fast):
+    if fast:
+        print("In FAST mode - halving pool with each move.\n")
+    else:
+        print("In SLOW mode - greeding for hits.\n")
     print(f"{sum(len(shape) for shape in shapes)} forms" +\
           f" over {len(shapes)} shapes. Generating boards...")
     start = time.time()
@@ -156,7 +168,7 @@ def run(shapes, hits, misses):
     try:
         print("Press CTRL+C anytime to end the session" +\
               " and print the latest hits & misses.\n")
-        while next_move(state):
+        while next_move(state, fast):
             do_move(state)
     except KeyboardInterrupt:
         print("\nUser requested to end session.")

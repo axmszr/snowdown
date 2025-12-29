@@ -77,9 +77,8 @@ class Boards:
         for board in self.boards:
             for row in range(ROWS):
                 for col in range(COLS):
-                    if not (board[row] & MASKS[col]):
+                    if board[row] & MASKS[col]:
                         counts[row][col] += 1
-
         return counts
 
     def best_move(self, counts):
@@ -100,6 +99,28 @@ class Boards:
                 delta = abs(d)
                 if delta < best or d == best:
                     best = delta
+                    move = (row, col)
+        return move
+
+    def most_move(self, counts):
+        total = len(self.boards)
+        if total == 0:
+            return NO_BOARDS
+        if total == 1:
+            return ONE_BOARD
+
+        # this minimizes misses, as a miss will reduce the pool greatly
+        best = -1
+        move = NO_BOARDS
+        for row in range(ROWS):
+            for col in range(COLS):
+                if (row, col) in self.hits or (row, col) in self.misses:
+                    continue
+                count = counts[row][col]
+                if count == total:
+                    return (row, col)
+                if count > best:
+                    best = count
                     move = (row, col)
         return move
 
