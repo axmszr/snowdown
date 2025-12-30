@@ -1,47 +1,54 @@
-Possible arrangements (forms only) | Best first guess
+Possible arrangements | Best first guess (FAST | SLOW)
+
 ========
 
 CANDLE, CANE, COOKIE, GIFT4
-    54,326,872 | (3, 8)
+    54,326,872 | (2, 2)
+
+CANDLE, COOKIE, GIFT6, STAR
+     9,092,652 | (2, 2)
 
 CANDLE, COOKIE, GIFT6, TREE
-    30,291,276 | (3, 8)
+    30,291,276 | (2, 2)
 
 CANDLE, GIFT6, LOG, STAR
-     3,398,700 | (3, 8)
+     3,398,700 | (2, 2)
 
 CANDLE, GIFT6, LOG, WREATH
      2,528,764 | (2, 2)
 
 CANDLE, GIFT6, TREE, WREATH
-     3,809,612 | (2, 4)
+     3,809,612 | (2, 4) | (2, 2)
 
 CANE, COOKIE, GIFT4, GIFT6
-    33,965,656 | (3, 9)
+    33,965,656 | (2, 1)
 
 CANE, COOKIE, GIFT4, WREATH
-     9,716,004 | (3, 8)
+     9,716,004 | (2, 2)
 
 CANE, GIFT4, GIFT6, STAR
-     6,357,180 | (3, 9)
+     6,357,180 | (2, 1)
 
 CANE, GIFT4, LOG, STAR
-     5,039,692 | (3, 7)
+     5,039,692 | (2, 3)
 
 CANE, GIFT4, SCARF, TREE
-    52,695,408 | (3, 8)
+    52,695,408 | (2, 2)
 
 CANE, GIFT6, LOG, TREE
-    22,261,244 | (3, 8)
+    22,261,244 | (2, 2)
+
+CANE, LOG, STAR, WREATH
+     1,708,048 | (2, 2)
 
 COOKIE, GIFT4, GIFT6, STAR
-     4,457,460 | (4, 8)
+     4,457,460 | (1, 2)
 
 COOKIE, GIFT4, TREE, STAR
-     6,154,960 | (3, 8)
+     6,154,960 | (2, 2)
 
 COOKIE, HAT, LOG, TREE
-    12,950,744 | (2, 5)
+    12,950,744 | (2, 5) | (2, 2)
 
 GIFT4, GIFT6, SCARF, STAR
-     5,140,968 | (4, 8)
+     5,140,968 | (1, 2)
