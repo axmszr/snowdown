@@ -14,7 +14,11 @@ def print_board(board):
 def next_move(state, fast):
     print("Getting counts...")
     start = time.time()
-    counts = state.get_counts()
+    if state.hits or state.misses:
+        counts = state.get_counts()
+    else:
+        counts = state.get_first_counts()
+    
     if fast:
         move = state.best_move(counts)
     else:

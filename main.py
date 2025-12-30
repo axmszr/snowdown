@@ -39,5 +39,5 @@ misses  = [(1,3), (2,1), (1,8), (4,5), (2,4), (1,6), (3,8)]
 
 state   = play(shapes, hits, misses, False)
 
-# True  - FAST mode, which maximizes entropy/minimizes steps til full info
-# False - SLOW mode, which maximizes hits/minimizes misses til full info
+# True  - FAST mode, max's entropy/min's steps til full info
+# False - SLOW mode, max's hits/min's misses til full info (generally better)

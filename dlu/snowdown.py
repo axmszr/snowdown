@@ -7,6 +7,15 @@ MASKS = [1 << col for col in range(COLS)]
 BORDER = "  " + '=' * (COLS * 2 - 1)
 ONE_BOARD = (-1, -1)
 NO_BOARDS = (-1, -2)
+CPS = (10**5,          5*10**5,
+       10**6, 2*10**6, 5*10**6,
+       10**7, 2*10**7, 5*10**7,
+       10**8)
+CHECKPOINTS = ("    100,000",                "    500,000",
+               "  1,000,000", "  2,000,000", "  5,000,000",
+               " 10,000,000", " 20,000,000", " 50,000,000",
+               "100,000,000")
+               
 
 ########
 
@@ -23,26 +32,28 @@ def insert(board, form, row, col):
     return new_board
 
 def make_rows(tiles):
-    grid = [0 for row in range(ROWS)]
+    grid = [0] * ROWS
     for tile in tiles:
         grid[tile[0]] |= MASKS[tile[1]]
     return [(i, grid[i]) for i in range(ROWS) if grid[i]]
 
-def generate_boards(shapes, hits, misses):
+def generate_boards(board, shapes, hits, misses):
     hit_rows = make_rows(hits)
     miss_rows = make_rows(misses)
 
-    #COUNTER = 0
-    #CHECKPOINTS = (1e5, 5e5, 1e6, 2e6, 5e6, 1e7)
-
+    counter = 0
+    cp = 0
     def generate(board, shapes):
         if not shapes:
             for hit_row in hit_rows:
                 if ~board[hit_row[0]] & hit_row[1]:
                     return []
-            #Boards.COUNTER += 1
-            #if Boards.COUNTER in Boards.CHECKPOINTS:
-            #    print(f"  Currently at {Boards.COUNTER} boards.")
+
+            nonlocal counter, cp
+            counter += 1
+            if counter == CPS[cp]:
+                print(f" {CHECKPOINTS[cp]} made")
+                cp += 1
             return [board]
 
         boards = []
@@ -60,19 +71,33 @@ def generate_boards(shapes, hits, misses):
                     else:
                         boards.extend(generate(new_board, remain))
         return boards
-    return generate([0 for row in range(ROWS)], shapes)
+    return generate(board, shapes)
 
 ########
 
 class Boards:
     def __init__(self, shapes, hits, misses):
-        self.boards = generate_boards(shapes, hits, misses)
+        self.fixed = [0] * ROWS
+        self.boards = generate_boards(self.fixed, shapes, hits, misses)
+        self.shapes = shapes
         self.hits = hits
         self.misses = misses
 
+    # due to symmetry, we can quarter the time taken
+    def get_first_counts(self):
+        cols_2 = math.ceil(COLS / 2)
+        rows_2 = math.ceil(ROWS / 2)
+        counts = [[0] * cols_2 for _ in range(rows_2)]
+
+        for board in self.boards:
+            for row in range(rows_2):
+                for col in range(cols_2):
+                    if board[row] & MASKS[col]:
+                        counts[row][col] += 1
+        return counts
+
     def get_counts(self):
-        counts = [[0 for col in range(COLS)]
-                  for row in range(ROWS)]
+        counts = [[0] * COLS for _ in range(ROWS)]
 
         for board in self.boards:
             for row in range(ROWS):
@@ -91,8 +116,8 @@ class Boards:
         # for a binary outcome, entropy is maxed at p = 1/2
         best = total + 1
         move = NO_BOARDS
-        for row in range(ROWS):
-            for col in range(COLS):
+        for row in range(len(counts)):
+            for col in range(len(counts[row])):
                 d = counts[row][col] * 2 - total
                 if d == 0:
                     return (row, col)
@@ -112,8 +137,8 @@ class Boards:
         # this minimizes misses, as a miss will reduce the pool greatly
         best = -1
         move = NO_BOARDS
-        for row in range(ROWS):
-            for col in range(COLS):
+        for row in range(len(counts)):
+            for col in range(len(counts[row])):
                 if (row, col) in self.hits or (row, col) in self.misses:
                     continue
                 count = counts[row][col]
@@ -142,3 +167,20 @@ class Boards:
         self.boards = list(filter(lambda b: not (b[tile[0]] & MASKS[tile[1]]),
                                   self.boards))
         return True
+
+    #TODO
+    def fix_shape(self, shape, form, origin):
+        if shape not in shapes:
+            return False
+        if not 0 <= form < len(shape):
+            return False
+        new_board = insert(self.fixed, shape[form], *origin)
+        if not new_board:
+            return False
+        self.fixed = new_board
+        self.shapes.remove(shape)
+        self.boards = generate_boards(self.fixed, self.shapes,
+                                      self.hits, self.misses)
+        return True
+    
+        
