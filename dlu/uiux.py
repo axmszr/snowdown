@@ -114,7 +114,7 @@ def ask_move(state):
             abc = input("\nTry again bodoh:\n")
 
         x, y, z = [int(a) for a in abc.split(' ')]
-        print(f"\n--> {'HIT' if z else 'MISS'} at ({x},{y})")
+        print(f"\n--> {'HIT' if z else 'MISS'} at {(x, y)}")
         print_hitmiss(state.hits, state.misses, x, y, z)
         correct = input("Is this correct? 1 for YES, 0 for NO.\n")
         while not check_check(correct):
