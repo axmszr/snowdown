@@ -35,7 +35,7 @@ def next_move(state, fast):
 
     best_count = counts[move[0]][move[1]]
     p = round(best_count/len(state.boards), 5)
-    print(f"Found in {dur}s, with\n  p = {p}")
+    print(f"Found in {dur}s, with\n  P_hit = {p}")
     if fast:
         delta = abs(best_count - len(state.boards) / 2)
         print(f"  delta = {delta}")
